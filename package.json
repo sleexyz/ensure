@@ -1,0 +1,26 @@
+{
+  "name": "@sleexyz/ensure",
+  "version": "1.0.0",
+  "description": "validation combinators",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/sleexyz/ensure",
+    "type": "git"
+  },
+  "scripts": {
+    "build": "coffee ./scripts/build.coffee",
+    "build-test": "coffee ./scripts/build_test.coffee",
+    "test": "yarn run build-test && node spec.js"
+  },
+  "author": "Sean Lee",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "coffee-loader": "^0.7.2",
+    "coffee-script": "^1.12.2",
+    "tape": "^4.6.3",
+    "webpack": "2.2.0",
+    "webpack-node-externals": "^1.5.4"
+  }
+}
