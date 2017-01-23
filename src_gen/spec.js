@@ -181,107 +181,95 @@ test = __webpack_require__(1);
 N = __webpack_require__(0);
 
 test('string', function (_) {
-  return _.test('works', function (_) {
-    _.ok(N.toPred(N.string)('asdf'));
-    _.ok(N.toPred(N.string)(''));
-    _.notok(N.toPred(N.string)(1));
-    _.notok(N.toPred(N.string)({}));
-    _.notok(N.toPred(N.string)([]));
-    return _.end();
-  });
+  _.ok(N.toPred(N.string)('asdf'));
+  _.ok(N.toPred(N.string)(''));
+  _.notok(N.toPred(N.string)(1));
+  _.notok(N.toPred(N.string)({}));
+  _.notok(N.toPred(N.string)([]));
+  return _.end();
 });
 
 test('fail', function (_) {
-  return _.test('works', function (_) {
-    _.notok(N.toPred(N.fail)(''));
-    _.notok(N.toPred(N.fail)({}));
-    _.notok(N.toPred(N.fail)([]));
-    _.notok(N.toPred(N.fail)(1));
-    return _.end();
-  });
+  _.notok(N.toPred(N.fail)(''));
+  _.notok(N.toPred(N.fail)({}));
+  _.notok(N.toPred(N.fail)([]));
+  _.notok(N.toPred(N.fail)(1));
+  return _.end();
 });
 
 test('pass', function (_) {
-  return _.test('works', function (_) {
-    _.ok(N.toPred(N.pass)(''));
-    _.ok(N.toPred(N.pass)({}));
-    _.ok(N.toPred(N.pass)([]));
-    _.ok(N.toPred(N.pass)(1));
-    return _.end();
-  });
+  _.ok(N.toPred(N.pass)(''));
+  _.ok(N.toPred(N.pass)({}));
+  _.ok(N.toPred(N.pass)([]));
+  _.ok(N.toPred(N.pass)(1));
+  return _.end();
 });
 
 test('shape', function (_) {
-  return _.test('works', function (_) {
-    var pred;
-    pred = N.toPred(N.shape({
-      foo: N.string,
-      bar: N.string
-    }));
-    _.ok(pred({
-      foo: 'hello',
-      bar: 'world'
-    }));
-    _.notok(pred({
-      foo: 'hello',
-      bar: 1
-    }));
-    _.notok(pred({
-      foo: 1,
-      bar: 'world'
-    }));
-    return _.end();
-  });
+  var pred;
+  pred = N.toPred(N.shape({
+    foo: N.string,
+    bar: N.string
+  }));
+  _.ok(pred({
+    foo: 'hello',
+    bar: 'world'
+  }));
+  _.notok(pred({
+    foo: 'hello',
+    bar: 1
+  }));
+  _.notok(pred({
+    foo: 1,
+    bar: 'world'
+  }));
+  return _.end();
 });
 
 test('pi', function (_) {
-  return _.test('works', function (_) {
-    var pred;
-    pred = N.toPred(N.pi(function (arg) {
-      var foo;
-      foo = arg.foo;
-      return N.shape({
-        bar: N.equals(foo)
-      });
-    }));
-    _.ok(pred({
-      foo: 'hello',
-      bar: 'hello'
-    }));
-    _.notok(pred({
-      foo: 'hello',
-      bar: 'world'
-    }));
-    return _.end();
-  });
+  var pred;
+  pred = N.toPred(N.pi(function (arg) {
+    var foo;
+    foo = arg.foo;
+    return N.shape({
+      bar: N.equals(foo)
+    });
+  }));
+  _.ok(pred({
+    foo: 'hello',
+    bar: 'hello'
+  }));
+  _.notok(pred({
+    foo: 'hello',
+    bar: 'world'
+  }));
+  return _.end();
 });
 
 test('all', function (_) {
-  return _.test('works', function (_) {
-    var pred;
-    pred = N.toPred(N.all([N.shape({
-      foo: N.equals('hello')
-    }), N.shape({
-      bar: N.equals('world')
-    })]));
-    _.ok(pred({
-      foo: 'hello',
-      bar: 'world'
-    }));
-    _.notok(pred({
-      foo: '',
-      bar: 'world'
-    }));
-    _.notok(pred({
-      foo: 'hello',
-      bar: ''
-    }));
-    _.notok(pred({
-      foo: '',
-      bar: ''
-    }));
-    return _.end();
-  });
+  var pred;
+  pred = N.toPred(N.all([N.shape({
+    foo: N.equals('hello')
+  }), N.shape({
+    bar: N.equals('world')
+  })]));
+  _.ok(pred({
+    foo: 'hello',
+    bar: 'world'
+  }));
+  _.notok(pred({
+    foo: '',
+    bar: 'world'
+  }));
+  _.notok(pred({
+    foo: 'hello',
+    bar: ''
+  }));
+  _.notok(pred({
+    foo: '',
+    bar: ''
+  }));
+  return _.end();
 });
 
 /***/ })
