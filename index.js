@@ -1,1 +1,1 @@
-module.exports = require './src_gen/index.js'
+module.exports = require('./src_gen/index');
