@@ -1,3 +1,5 @@
 node_modules/
 .yarnclean
 yarn.lock
+src_gen/
+!src_gen/index.js
