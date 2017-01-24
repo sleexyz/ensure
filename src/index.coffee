@@ -3,7 +3,7 @@ _isFunction = require 'lodash/isFunction'
 _assert = (condition, errorMessage) ->
   unless condition
     error = new Error errorMessage
-    error.framesToPop = 1
+    error.framesToPop = 2
     throw error
 
 _runCheck = ({onSuccess, onError}) -> (check) -> (obj) ->
@@ -19,11 +19,11 @@ module.exports =
 
   pass: (v) -> undefined
 
-  string: (v) -> _assert typeof v is 'string', 'not string'
+  string: (v) -> _assert typeof v is 'string', "#{v} is not a string"
 
-  function: (v) -> _assert _isFunction v, 'not function'
+  function: (v) -> _assert _isFunction v, "#{v} is not a function"
 
-  equals: (w) -> (v) -> _assert w is v, 'not equal'
+  equals: (w) -> (v) -> _assert w is v, "#{v} is not equal to #{w}"
 
   # combinators
   shape: (predObj) -> (v) -> predObj[key](v[key]) for key of predObj

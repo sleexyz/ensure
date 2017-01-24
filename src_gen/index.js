@@ -76,34 +76,92 @@ module.exports = require("lodash/isFunction");
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _isFunction, factor, fail, isString;
+var _assert, _isFunction, _runCheck;
 
 _isFunction = __webpack_require__(0);
 
-factor = function (predObj) {
-  return function (obj) {
-    var key;
-    for (key in predObj) {
-      if (!predObj[key](obj[key])) {
-        return false;
+_assert = function (condition, errorMessage) {
+  var error;
+  if (!condition) {
+    error = new Error(errorMessage);
+    error.framesToPop = 2;
+    throw error;
+  }
+};
+
+_runCheck = function (arg) {
+  var onError, onSuccess;
+  onSuccess = arg.onSuccess, onError = arg.onError;
+  return function (check) {
+    return function (obj) {
+      var e;
+      try {
+        check(obj);
+      } catch (error1) {
+        e = error1;
+        return onError(e);
       }
-    }
-    return true;
+      return onSuccess(obj);
+    };
   };
 };
 
-isString = function (obj) {
-  return typeof obj === 'string';
-};
-
-fail = function (obj) {
-  return false;
-};
-
 module.exports = {
-  factor: factor,
-  fail: fail,
-  isString: isString
+  fail: function (v) {
+    return _assert(false, 'fail');
+  },
+  pass: function (v) {
+    return void 0;
+  },
+  string: function (v) {
+    return _assert(typeof v === 'string', v + " is not a string");
+  },
+  "function": function (v) {
+    return _assert(_isFunction(v, v + " is not a function"));
+  },
+  equals: function (w) {
+    return function (v) {
+      return _assert(w === v, v + " is not equal to " + w);
+    };
+  },
+  shape: function (predObj) {
+    return function (v) {
+      var key, results;
+      results = [];
+      for (key in predObj) {
+        results.push(predObj[key](v[key]));
+      }
+      return results;
+    };
+  },
+  pi: function (reflect) {
+    return function (v) {
+      return reflect(v)(v);
+    };
+  },
+  all: function (checks) {
+    return function (v) {
+      var check, i, len, results;
+      results = [];
+      for (i = 0, len = checks.length; i < len; i++) {
+        check = checks[i];
+        results.push(check(v));
+      }
+      return results;
+    };
+  },
+  toPromise: _runCheck({
+    onSuccess: Promise.resolve,
+    onError: Promise.reject
+  }),
+  toPred: _runCheck({
+    onSuccess: function () {
+      return true;
+    },
+    onError: function () {
+      return false;
+    }
+  })
 };
 
 /***/ })

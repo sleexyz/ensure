@@ -63,22 +63,46 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var map = {
+	"./index_spec.coffee": 2
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 0;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var _assert, _isFunction, _runCheck;
 
-_isFunction = __webpack_require__(2);
+_isFunction = __webpack_require__(4);
 
 _assert = function (condition, errorMessage) {
   var error;
   if (!condition) {
     error = new Error(errorMessage);
-    error.framesToPop = 1;
+    error.framesToPop = 2;
     throw error;
   }
 };
@@ -108,14 +132,14 @@ module.exports = {
     return void 0;
   },
   string: function (v) {
-    return _assert(typeof v === 'string', 'not string');
+    return _assert(typeof v === 'string', v + " is not a string");
   },
   "function": function (v) {
-    return _assert(_isFunction(v, 'not function'));
+    return _assert(_isFunction(v, v + " is not a function"));
   },
   equals: function (w) {
     return function (v) {
-      return _assert(w === v, 'not equal');
+      return _assert(w === v, v + " is not equal to " + w);
     };
   },
   shape: function (predObj) {
@@ -159,118 +183,190 @@ module.exports = {
 };
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("tape");
+var N, assert, fail, pass;
+
+N = __webpack_require__(1);
+
+assert = __webpack_require__(3);
+
+pass = function (cont) {
+  return cont();
+};
+
+fail = function (cont) {
+  return assert.throws(cont);
+};
+
+describe('predicates', function () {
+  describe('fail', function () {
+    return it('works', function () {
+      fail(function () {
+        return N.fail('');
+      });
+      fail(function () {
+        return N.fail({});
+      });
+      fail(function () {
+        return N.fail([]);
+      });
+      return fail(function () {
+        return N.fail(1);
+      });
+    });
+  });
+  describe('pass', function () {
+    return it('works', function () {
+      pass(function () {
+        return N.pass('');
+      });
+      pass(function () {
+        return N.pass({});
+      });
+      pass(function () {
+        return N.pass([]);
+      });
+      return pass(function () {
+        return N.pass(1);
+      });
+    });
+  });
+  return describe('string', function () {
+    return it('works', function () {
+      pass(function () {
+        return N.string('asdf');
+      });
+      pass(function () {
+        return N.string('');
+      });
+      fail(function () {
+        return N.string(1);
+      });
+      fail(function () {
+        return N.string({});
+      });
+      return fail(function () {
+        return N.string([]);
+      });
+    });
+  });
+});
+
+describe('combinators', function () {
+  describe('shape', function () {
+    return it('works', function () {
+      var check;
+      check = N.shape({
+        foo: N.string,
+        bar: N.string
+      });
+      pass(function () {
+        return check({
+          foo: 'hello',
+          bar: 'world'
+        });
+      });
+      fail(function () {
+        return check({
+          foo: 'hello',
+          bar: 1
+        });
+      });
+      return fail(function () {
+        return check({
+          foo: 1,
+          bar: 'world'
+        });
+      });
+    });
+  });
+  describe('pi', function () {
+    return it('works', function () {
+      var check;
+      check = N.pi(function (arg) {
+        var foo;
+        foo = arg.foo;
+        return N.shape({
+          bar: N.equals(foo)
+        });
+      });
+      pass(function () {
+        return check({
+          foo: 'hello',
+          bar: 'hello'
+        });
+      });
+      return fail(function () {
+        return check({
+          foo: 'hello',
+          bar: 'world'
+        });
+      });
+    });
+  });
+  return describe('all', function () {
+    return it('works', function () {
+      var check;
+      check = N.all([N.shape({
+        foo: N.equals('hello')
+      }), N.shape({
+        bar: N.equals('world')
+      })]);
+      pass(function () {
+        return check({
+          foo: 'hello',
+          bar: 'world'
+        });
+      });
+      fail(function () {
+        return check({
+          foo: '',
+          bar: 'world'
+        });
+      });
+      fail(function () {
+        return check({
+          foo: 'hello',
+          bar: ''
+        });
+      });
+      return fail(function () {
+        return check({
+          foo: '',
+          bar: ''
+        });
+      });
+    });
+  });
+});
 
 /***/ }),
-/* 2 */
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("assert");
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = require("lodash/isFunction");
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var N, test;
+var context, i, key, len, ref;
 
-test = __webpack_require__(1);
+context = __webpack_require__(0);
 
-N = __webpack_require__(0);
-
-test('string', function (_) {
-  _.ok(N.toPred(N.string)('asdf'));
-  _.ok(N.toPred(N.string)(''));
-  _.notok(N.toPred(N.string)(1));
-  _.notok(N.toPred(N.string)({}));
-  _.notok(N.toPred(N.string)([]));
-  return _.end();
-});
-
-test('fail', function (_) {
-  _.notok(N.toPred(N.fail)(''));
-  _.notok(N.toPred(N.fail)({}));
-  _.notok(N.toPred(N.fail)([]));
-  _.notok(N.toPred(N.fail)(1));
-  return _.end();
-});
-
-test('pass', function (_) {
-  _.ok(N.toPred(N.pass)(''));
-  _.ok(N.toPred(N.pass)({}));
-  _.ok(N.toPred(N.pass)([]));
-  _.ok(N.toPred(N.pass)(1));
-  return _.end();
-});
-
-test('shape', function (_) {
-  var pred;
-  pred = N.toPred(N.shape({
-    foo: N.string,
-    bar: N.string
-  }));
-  _.ok(pred({
-    foo: 'hello',
-    bar: 'world'
-  }));
-  _.notok(pred({
-    foo: 'hello',
-    bar: 1
-  }));
-  _.notok(pred({
-    foo: 1,
-    bar: 'world'
-  }));
-  return _.end();
-});
-
-test('pi', function (_) {
-  var pred;
-  pred = N.toPred(N.pi(function (arg) {
-    var foo;
-    foo = arg.foo;
-    return N.shape({
-      bar: N.equals(foo)
-    });
-  }));
-  _.ok(pred({
-    foo: 'hello',
-    bar: 'hello'
-  }));
-  _.notok(pred({
-    foo: 'hello',
-    bar: 'world'
-  }));
-  return _.end();
-});
-
-test('all', function (_) {
-  var pred;
-  pred = N.toPred(N.all([N.shape({
-    foo: N.equals('hello')
-  }), N.shape({
-    bar: N.equals('world')
-  })]));
-  _.ok(pred({
-    foo: 'hello',
-    bar: 'world'
-  }));
-  _.notok(pred({
-    foo: '',
-    bar: 'world'
-  }));
-  _.notok(pred({
-    foo: 'hello',
-    bar: ''
-  }));
-  _.notok(pred({
-    foo: '',
-    bar: ''
-  }));
-  return _.end();
-});
+ref = context.keys();
+for (i = 0, len = ref.length; i < len; i++) {
+  key = ref[i];
+  context(key);
+}
 
 /***/ })
 /******/ ]);

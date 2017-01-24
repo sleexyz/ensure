@@ -12,6 +12,8 @@ module.exports =
   resolve: baseConfig.resolve
   stats: 'errors-only'
   target: 'node'
+  node:
+    fs: 'empty'
   output:
     path: path.resolve __dirname, 'src_gen'
     filename: 'spec.js'
