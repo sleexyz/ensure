@@ -1,4 +1,4 @@
-# refi
+# refinement
 
 Combinatory Data Refinement DSL
 
@@ -8,7 +8,7 @@ Combinatory Data Refinement DSL
 ## Quick Start
 
 ```
-import R from 'refi'
+import R from 'refinement'
 
 const ensureValidAPI = R.shape({
   foo: R.string
@@ -30,7 +30,7 @@ console.log(R.toPred(ensureValidAPI)({
 ## Guide
 
 ```
-import R from 'refi'
+import R from 'refinement'
 
 // ...
 

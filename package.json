@@ -1,10 +1,10 @@
 {
-  "name": "refi",
+  "name": "refinement",
   "version": "0.0.1",
   "description": "combinatory data refinement DSL",
   "main": "index.js",
   "repository": {
-    "url": "https://github.com/sleexyz/refi",
+    "url": "https://github.com/sleexyz/refinement",
     "type": "git"
   },
   "scripts": {
