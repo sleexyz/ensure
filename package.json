@@ -1,10 +1,10 @@
 {
-  "name": "@sleexyz/ensure",
-  "version": "1.0.0",
-  "description": "validation combinators",
+  "name": "refi",
+  "version": "0.0.1",
+  "description": "combinatory data refinement DSL",
   "main": "index.js",
   "repository": {
-    "url": "https://github.com/sleexyz/ensure",
+    "url": "https://github.com/sleexyz/refi",
     "type": "git"
   },
   "scripts": {

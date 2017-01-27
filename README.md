@@ -1,6 +1,6 @@
-# @sleexyz/ensure
+# refi
 
-This library provides combinators for constructing compositional validation schemas.
+Combinatory Data Refinement DSL
 
 **WIP don't use :p**
 
@@ -8,19 +8,19 @@ This library provides combinators for constructing compositional validation sche
 ## Quick Start
 
 ```
-import N from '@sleexyz/ensure'
+import R from 'refi'
 
-const ensureValidAPI = N.shape({
-  foo: N.string
-  bar: N.string
+const ensureValidAPI = R.shape({
+  foo: R.string
+  bar: R.string
 });
 
-console.log(N.toPred(ensureValidAPI)({
+console.log(R.toPred(ensureValidAPI)({
   foo: "hello",
   bar: "world"
 )); // true
 
-console.log(N.toPred(ensureValidAPI)({
+console.log(R.toPred(ensureValidAPI)({
   foo: "hello",
   bar: null
 ));  // false
@@ -29,22 +29,23 @@ console.log(N.toPred(ensureValidAPI)({
 
 ## Guide
 
-Schemas are simply functions that return nothing on validation success and throw an error on validation failure.
-This means one can sprinkle them into your code for runtime assertions:
 ```
-import N from '@sleexyz/ensure'
-...
+import R from 'refi'
+
+// ...
+
 const foo = "hello";
-N.string(foo)
-...
+R.string(foo)
+
+// ...
 ```
 
 ## Conversions
 
-`N` provides conversions between different representations:
+`R` provides conversions between different representations:
 
-#### `N.toPred` : Schema -> Predicate
+#### `R.toPred` : Schema -> Predicate
 
-#### `N.toPromise` : Schema -> Promise
+#### `R.toPromise` : Schema -> Promise
 
-#### `N.fromPred` : (Predicate, errorMessage?: String) -> Schema
+#### `R.fromPred` : (Predicate, errorMessage?: String) -> Schema
